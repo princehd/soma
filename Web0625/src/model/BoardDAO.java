@@ -1,12 +1,14 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class MemberDAO {
+public class BoardDAO {
 	private String user = "system";
 	private String password = "12345";
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -29,58 +31,37 @@ public class MemberDAO {
 		}
 	}
 	
-	public boolean join(MemberDTO dto) {
-		// TODO Auto-generated method stub
-		getConnection();
-		String sql = "insert into member values(?,?,?)";
-		int rows = 0;
-		try {
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, dto.getId());
-			psmt.setString(2, dto.getPw());
-			psmt.setString(3, dto.getName());
-			rows = psmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		if(rows == 0)
-			return false;
-		else
-			return true;
+	public BoardDTO selectOneBoard(String num) {
+		return null;
 	}
-
-	public String login(MemberDTO dto) {
-		getConnection();
-		String sql = "select * from member"+
-					 " where id = ? and pw = ?";
-		String name = null;
+	
+	public ArrayList<BoardDTO> selectAllBoard(){
+		ArrayList<BoardDTO> list 
+						= new ArrayList<BoardDTO>();
+		
+		getConnection(); // DB접속
+		String sql = "SELECT * FROM BOARD"
+				    + " ORDER BY BOARD_DATE";
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, dto.getId());
-			psmt.setString(2, dto.getPw());
 			rs = psmt.executeQuery();
-			if(rs.next()) {
-				// 로그인 성공
-				name = rs.getString("name");
-				// 상태 유지 -> 쿠키,세션
+			while(rs.next()) {
+				int board_num = rs.getInt("board_num");
+				String board_title = rs.getString("board_title");
+				String board_content = rs.getString("board_content");
+				String board_writer = rs.getString("board_writer");
+				Date board_date = rs.getDate("board_date");
+				BoardDTO dto = new BoardDTO(board_num, board_title, board_content, board_writer, board_date);
+				list.add(dto);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			close();
 		}
-//		if(name == null)
-//			return false;
-//		else
-//			return true;
-		return name;
+		
+		return list;
 	}
-
+	
 	private void close() {
 		try {
 			if(rs != null) rs.close();
@@ -92,7 +73,3 @@ public class MemberDAO {
 		}
 	}
 }
-
-
-
-

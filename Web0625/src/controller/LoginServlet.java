@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.MemberDAO;
 import model.MemberDTO;
@@ -20,8 +21,19 @@ public class LoginServlet extends HttpServlet {
 		
 		MemberDAO dao = new MemberDAO();
 		MemberDTO dto = new MemberDTO(id,pw);
-		boolean isSuccess = dao.login(dto);
+		String name = dao.login(dto);
 		
+		if(name != null) {
+			// 성공
+			// server측에 상태를 저장하기 위한 공간(객체)
+			HttpSession session = request.getSession();
+			session.setAttribute("loginUser", name);
+			response.sendRedirect("view/loginSuccess.jsp"); // 페이지이동
+		}else {
+			// 실패
+			response.sendRedirect("view/loginFail.html"); // 페이지이동
+		}
+			
 		
 	}
 
