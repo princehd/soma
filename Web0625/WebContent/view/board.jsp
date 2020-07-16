@@ -11,10 +11,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<% 
-		BoardDAO dao = new BoardDAO();
-		ArrayList<BoardDTO> boardList = dao.selectAllBoard();
-	%>
+	<% ArrayList<BoardDTO> boardList =
+(ArrayList<BoardDTO>)session.getAttribute("list"); %>
 	<h1>°Ô½ÃÆÇ</h1>
 	<table border="solid">
 		<tr>

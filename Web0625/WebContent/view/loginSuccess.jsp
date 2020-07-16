@@ -9,7 +9,7 @@
 <body>
 	<% String name = (String)session.getAttribute("loginUser"); %>
 	<h1><%= name %>님 환영합니다.</h1>
-	<a href="board.jsp">게시판</a>
+	<a href="../selectAllBoard">게시판</a>
 </body>
 </html>
 

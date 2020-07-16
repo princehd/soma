@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="model.BoardDTO"%>
 <%@page import="model.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
@@ -18,23 +19,25 @@
 	<table border='solid'>
 		<tr>
 			<td>글번호</td>
-			<td></td>
+			<td><%= dto.getBoard_num() %></td>
 		</tr>
 		<tr>
 			<td>제목</td>
-			<td></td>
+			<td><%= dto.getBoard_title() %></td>
 		</tr>
 		<tr>
 			<td>작성자</td>
-			<td></td>
+			<td><%= dto.getBoard_writer() %></td>
 		</tr>
 		<tr>
 			<td>작성일자</td>
-			<td></td>
+			<% SimpleDateFormat simformat =
+			 new SimpleDateFormat("yyyy-MM-dd"); %>
+			<td><%= simformat.format(dto.getBoard_date()) %></td>
 		</tr>
 		<tr>
 			<td>내용</td>
-			<td></td>
+			<td><%= dto.getBoard_content() %></td>
 		</tr>
 	</table>
 

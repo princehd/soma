@@ -32,7 +32,28 @@ public class BoardDAO {
 	}
 	
 	public BoardDTO selectOneBoard(String num) {
-		return null;
+		BoardDTO dto = null;
+		getConnection();
+		String sql = "SELECT * FROM BOARD "+
+				     "WHERE BOARD_NUM = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, num);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				String board_title = rs.getString("board_title");
+				String board_content = rs.getString("board_content");
+				String board_writer = rs.getString("board_writer");
+				Date board_date = rs.getDate("board_date");
+				dto = new BoardDTO(Integer.parseInt(num), board_title, board_content, board_writer, board_date);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return dto;
 	}
 	
 	public ArrayList<BoardDTO> selectAllBoard(){
@@ -57,6 +78,8 @@ public class BoardDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			close();
 		}
 		
 		return list;
